@@ -15,6 +15,10 @@ class Background {
         this._starsPosY = []
         this._starsRadius =[]
 
+        this._starsSpeedX = []
+        this._starsSpeedY = []
+
+
         this.generateStars()
     }
 
@@ -28,14 +32,9 @@ class Background {
         this._ctx.fillRect(0,0,this._width, this._height)
 
         //drawing the stars
-        for(let i = 0; i < this._numberOfStars; i ++){
-            this._ctx.beginPath()
-            this._ctx.fillStyle = "white";
-            this._ctx.arc(this._starsPosX[i], this._starsPosY[i], this._starsRadius[i], 0, Math.PI * 2);
-            this._ctx.fill();
-            this._ctx.closePath()
+        this.drawStars()
 
-        }
+        
     }
 
     generateStars(){
@@ -48,9 +47,40 @@ class Background {
             this._starsPosY.push(Math.floor(Math.random()*this._height))
 
             this._starsRadius.push(Math.random()*1.2)
+
+            this._starsSpeedX.push(Math.random()*.25)
+
+            this._starsSpeedY.push(Math.random()*.12)
         }
     }
 
+    moveStars() {
+        for(let i = 0; i < this._numberOfStars; i++ ){
+
+
+
+            this._starsPosX[i] < this._width ?  this._starsPosX[i] += this._starsSpeedX[i] : this._starsPosX[i] = -20
+            // this._starsPosX[i] += this._starsSpeedX[i]
+
+            this._starsPosY[i] < this._height ?  this._starsPosY[i] += this._starsSpeedY[i] : this._starsPosY[i] = -20
+            // this._starsPosY[i] += this._starsSpeedY[i]
+
+        }
+    }
+
+    drawStars(){
+        this.moveStars()
+
+        for(let i = 0; i < this._numberOfStars; i ++){
+            this._ctx.beginPath()
+            this._ctx.fillStyle = "white";
+            this._ctx.arc(this._starsPosX[i], this._starsPosY[i], this._starsRadius[i], 0, Math.PI * 2);
+            this._ctx.fill();
+            this._ctx.closePath()
+
+
+    }
+}
 
 
 }

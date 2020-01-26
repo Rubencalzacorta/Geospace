@@ -19,10 +19,7 @@ const Game = {
         aIsDown : false, 
         sIsDown: false, 
         dIsDown: false, 
-
-
     },
-
 
     heroShip:{
         shipX: 200,
@@ -32,11 +29,7 @@ const Game = {
         velX : 0,
         velY: 0,
         acceleration: 0.1,
-
-
     },
-
-
 
     init() {
         this.canvas = document.getElementById('myCanvas')
@@ -47,39 +40,32 @@ const Game = {
         this.canvas.height = this.height
         this.start()
         this.enventListeners()
-
     },
 
     start(){
 
+        //start the hero
+        this.image = new Image()
+        this.image.src = "/images/heroship/ship stop.png"
         
+        // start the background
+        this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
 
+        //game interval
         this.interval = setInterval(() => {
             
-
             this.clearScreen()
+            this.background.draw()
             this.drawHero()
-
-           
-
-            console.log(`a is pressed ${this.keys.aIsDown} --- w is pressed ${this.keys.wIsDown} ---- d is down ${this.keys.dIsDown}---- s is down ${this.keys.sIsDown}`)
-
-
 
         }, 1000/this.fps);
     },
 
-
-
-
     drawHero() {
 
         //drawing the image including the movement. 
-        this.image = new Image()
-        this.image.src = "/images/heroship/ship stop.png"
         this.ctx.drawImage(this.image, this.heroShip.shipX, this.heroShip.shipY, this.heroShip.width, this.heroShip.height)
         this.moveHero()
-
     },
 
     moveHero(){
@@ -112,7 +98,7 @@ const Game = {
             this.heroShip.shipX = this.canvas.width - this.heroShip.width - 1
         }
 
-
+        //top limit of the screen
         if(this.heroShip.shipY >= 0){
             this.heroShip.shipY += this.heroShip.velY
         } else {
@@ -120,6 +106,7 @@ const Game = {
             this.heroShip.shipY = 1
         }
 
+        //bottom limit of the screen
         if(this.heroShip.shipY + this.heroShip.height < this.canvas.height){
             this.heroShip.shipY += this.heroShip.velY
         }else {
@@ -142,8 +129,11 @@ const Game = {
 
     enventListeners(){
 
+        // to be able to move in different directions we have to identify when the a key is being held down. 
+        // as keypress event cant accept multiple keys simultaniously, we have to identify when each key was down, and when it was release
+        //this way we can keep track of simultanious key
 
-
+        //updating IsDown values to true when the key is pressed down
         document.onkeydown = e =>{
             switch(e.keyCode){
                 case this.keys.W:
@@ -160,7 +150,7 @@ const Game = {
                     break;
         }
 
-
+        //updating the IsDown values to false when keays are release. 
         document.onkeyup = e => {
             switch(e.keyCode){
                 case this.keys.W:
@@ -178,28 +168,6 @@ const Game = {
         }
         }
 
-
-
-
-        // document.onkeypress = e => {
-        //     console.log(e);
-
-        //     switch(e.keyCode){
-        //         case this.keys.W:
-        //             this.heroShip.velY -= this.heroShip.acceleration
-        //             break;
-        //         case this.keys.A:
-        //             this.heroShip.velX -= this.heroShip.acceleration
-        //             break;
-        //         case this.keys.S: 
-        //             this.heroShip.velY += this.heroShip.acceleration
-        //             break;
-        //         case this.keys.D: 
-        //             this.heroShip.velX += this.heroShip.acceleration
-        //             break;
-            
-
-            // }
 
 
         }

@@ -4,6 +4,8 @@ const Game = {
     screenWidth: undefined,
     screenHeight: undefined, 
     fps : 60,
+    counter: 0,
+    enemySquares: [],
     keys: {
         W : 87,
         A: 65,
@@ -31,6 +33,7 @@ const Game = {
         acceleration: 0.1,
     },
 
+
     init() {
         this.canvas = document.getElementById('myCanvas')
         this.ctx = this.canvas.getContext('2d')
@@ -40,7 +43,6 @@ const Game = {
         this.canvas.height = this.height
         this.start()
         this.enventListeners()
-        this.generateBigSquares()
     },
 
     start(){
@@ -51,14 +53,27 @@ const Game = {
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
-
+        
+        this.generateBigSquares()
+        
         //game interval
         this.interval = setInterval(() => {
             
+            //add to counter
+            this.counter > 5000 ? this.counter = 0 : this.counter ++
+
+            this.generateBigSquares()
+
+            // console.log(this.enemySquares)
+            
             this.clearScreen()
+
+            console.log(this.enemySquares[0]._posX)
             this.background.draw()
             this.drawHero()
-            this.obstacle.draw()
+            
+
+            // console.log(`a is does? ${this.keys.aIsDown}, w is does? ${this.keys.wIsDown},d is does? ${this.keys.dIsDown},s is does? ${this.keys.sIsDown}`)
 
         }, 1000/this.fps);
     },
@@ -177,9 +192,12 @@ const Game = {
     },
 
     generateBigSquares(){
-        this.obstacle = new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)
+        if(this.counter % 120 == 0 ){
+        
+        this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
 
-    }
+
+    }}
     
 
 

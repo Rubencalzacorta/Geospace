@@ -40,6 +40,7 @@ const Game = {
         this.canvas.height = this.height
         this.start()
         this.enventListeners()
+        this.generateBigSquares()
     },
 
     start(){
@@ -57,6 +58,7 @@ const Game = {
             this.clearScreen()
             this.background.draw()
             this.drawHero()
+            this.obstacle.draw()
 
         }, 1000/this.fps);
     },
@@ -171,6 +173,11 @@ const Game = {
 
 
         }
+
+    },
+
+    generateBigSquares(){
+        this.obstacle = new BlueBigSquare(this.ctx,this.screenWidth, this.screenHeight)
 
     }
     

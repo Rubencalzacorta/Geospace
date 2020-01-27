@@ -48,13 +48,11 @@ const Game = {
     start(){
 
         //start the hero
-        this.image = new Image()
-        this.image.src = "/images/heroship/ship stop.png"
+       this.heroShip = new Hero(this.ctx,this.keys,this.canvas.width, this.canvas.height)
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
         
-        this.generateBigSquares()
         
         //game interval
         this.interval = setInterval(() => {
@@ -62,15 +60,13 @@ const Game = {
             //add to counter
             this.counter > 5000 ? this.counter = 0 : this.counter ++
 
-            this.generateBigSquares()
 
             // console.log(this.enemySquares)
             
             this.clearScreen()
 
-            console.log(this.enemySquares[0]._posX)
-            this.background.draw()
-            this.drawHero()
+            this.moveAll()
+            this.drawAll()            
             
 
             // console.log(`a is does? ${this.keys.aIsDown}, w is does? ${this.keys.wIsDown},d is does? ${this.keys.dIsDown},s is does? ${this.keys.sIsDown}`)
@@ -78,66 +74,23 @@ const Game = {
         }, 1000/this.fps);
     },
 
-    drawHero() {
 
-        //drawing the image including the movement. 
-        this.ctx.drawImage(this.image, this.heroShip.shipX, this.heroShip.shipY, this.heroShip.width, this.heroShip.height)
-        this.moveHero()
-    },
+    moveAll(){
 
-    moveHero(){
-
-        //changing acceleration depending on the keys being held down
-        this.keys.aIsDown? this.heroShip.velX -= this.heroShip.acceleration : null ;
-        this.keys.dIsDown? this.heroShip.velX += this.heroShip.acceleration : null ;
-        this.keys.wIsDown? this.heroShip.velY -= this.heroShip.acceleration : null ;
-        this.keys.sIsDown? this.heroShip.velY += this.heroShip.acceleration : null ;
-
-        //move the ships position
+        console.log(this.heroShip)
+        this.heroShip.moveHero()
         
-        // this.heroShip.shipX >= 0 && this.heroShip.shipX <= this.canvas.width ? this.heroShip.shipX += this.heroShip.velX : this.heroShip.velX = 0
-
-        // this.heroShip.shipY >= 0 && this.heroShip.shipY <= this.canvas.height ? this.heroShip.shipY += this.heroShip.velY : this.heroShip.velY = 0
-
-        //left side of the screen limit
-        if(this.heroShip.shipX >= 0){
-            this.heroShip.shipX += this.heroShip.velX 
-        }else {
-            this.heroShip.velX = 0
-            this.heroShip.shipX = 1
-        }
-
-        //right side of screen limit
-        if(this.heroShip.shipX + this.heroShip.width <= this.canvas.width){
-            this.heroShip.shipX += this.heroShip.velX 
-        }else {
-            this.heroShip.velX = 0
-            this.heroShip.shipX = this.canvas.width - this.heroShip.width - 1
-        }
-
-        //top limit of the screen
-        if(this.heroShip.shipY >= 0){
-            this.heroShip.shipY += this.heroShip.velY
-        } else {
-            this.heroShip.velY = 0
-            this.heroShip.shipY = 1
-        }
-
-        //bottom limit of the screen
-        if(this.heroShip.shipY + this.heroShip.height < this.canvas.height){
-            this.heroShip.shipY += this.heroShip.velY
-        }else {
-            this.heroShip.velY = 0
-            this.heroShip.shipY = this.canvas.height - this.heroShip.height -1
-        }
-
-
-
-        // this.heroShip.shipX += this.heroShip.velX
-        // this.heroShip.shipY += this.heroShip.velY
-
 
     },
+
+    drawAll(){
+        
+        this.background.draw()
+        this.heroShip.drawHero()
+        
+    },
+
+
 
     clearScreen(){
         this.ctx.clearRect(0 , 0 , this.canvas.width, this.canvas.height)
@@ -191,13 +144,13 @@ const Game = {
 
     },
 
-    generateBigSquares(){
-        if(this.counter % 120 == 0 ){
+    // generateBigSquares(){
+    //     if(this.counter % 120 == 0 ){
         
-        this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
+    //     this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
 
 
-    }}
+    // }}
     
 
 

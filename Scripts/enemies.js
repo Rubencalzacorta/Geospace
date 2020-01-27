@@ -7,6 +7,8 @@ class BlueBigSquare{
     this._posY = 50
     this._velX = 10
     this._velY = 10
+    this._screenWidth = screenwidth
+    this._screenHeight = screenheight
 
     this.generateSpecs()
     }
@@ -28,12 +30,31 @@ class BlueBigSquare{
 
     generateSpecs(){
 
+        // setting X and Y coordinates such as they never appear inside the screen
 
+        this._posX = Math.random()*(this._screenWidth + 2*this._width) - this._width
+
+        if(this._posX > 0 && this._posX < this._screenWidth){
+
+            Math.random() > .5 ? this._posY = 0 - this._width : this._posY = this._screenWidth
+    
+
+        } else if (this._posX < 0){
+
+            this._posX = 0 - this._width
+            this._posY = Math.random()*(this._screenHeight+2*this._height) -this._height
+
+        }else{
+
+            this._posY = Math.random()*(this._screenHeight+2*this._height) -this._height
+
+        }
 
 
         this._velX = Math.random()*2
         this._velY = Math.random()*2
 
+        console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
 
 
     }

@@ -177,7 +177,7 @@ const Game = {
     },
 
     generateBigSquares(){
-        this.obstacle = new BlueBigSquare(this.ctx,this.screenWidth, this.screenHeight)
+        this.obstacle = new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)
 
     }
     

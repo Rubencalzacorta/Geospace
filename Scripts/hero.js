@@ -1,5 +1,5 @@
 class Hero {
-        constructor(ctx,keys, screenWidth, screenHeight){
+        constructor(ctx,keys, mouse, screenWidth, screenHeight){
         this._ctx = ctx
         this._screenWidth = screenWidth
         this._screenHeight = screenHeight
@@ -13,6 +13,8 @@ class Hero {
         this._image = new Image()
         this._image.src = "/images/heroship/ship stop.png"
         this._keys = keys
+        this._bullets = []
+        this._mouse = mouse
         }
 
 
@@ -20,6 +22,8 @@ class Hero {
 
         //drawing the image including the movement. 
         this._ctx.drawImage(this._image, this._shipX, this._shipY, this._width, this._height)
+        this._bullets.forEach(bullet => bullet.draw())
+        
         
     }
 
@@ -70,12 +74,15 @@ class Hero {
         }
 
 
+        //move bullet
+        this._bullets.forEach(bullet => bullet.move())
 
-        // this.heroShip.shipX += this.heroShip.velX
-        // this.heroShip.shipY += this.heroShip.velY
     }
 
-
+        shoot(){
+            console.log(this._mouse.posX, this._mouse.posY + "-------------" + this._shipX, this._shipY)
+            this._bullets.push(new Bullet(this._ctx,this._shipX, this._shipY, this._width, this._height, this._mouse.posX, this._mouse.posY))
+        }
 
 
 

@@ -74,7 +74,7 @@ class BlueBigSquare{
             this._velY *= -1
         }
 
-        console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
+        // console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
 
 
     }

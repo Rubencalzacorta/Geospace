@@ -23,6 +23,13 @@ const Game = {
         dIsDown: false, 
     },
 
+    mouse:{
+        posX: 0,
+        posY: 0
+    },
+
+    isClick: false,
+
     heroShip:{
         shipX: 200,
         shipY: 200,
@@ -48,10 +55,12 @@ const Game = {
     start(){
 
         //start the hero
-       this.heroShip = new Hero(this.ctx,this.keys,this.canvas.width, this.canvas.height)
+       this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height)
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
+
+
         
         
         //game interval
@@ -60,9 +69,14 @@ const Game = {
             //add to counter
             this.counter > 5000 ? this.counter = 0 : this.counter ++
 
+            
+            this.generateBigSquares()
+            this.deleteBigSquares()
 
+            console.log(`mouse x ${this.mouse.posX} and mouse y is ${this.mouse.posY}`)
             // console.log(this.enemySquares)
             
+
             this.clearScreen()
 
             this.moveAll()
@@ -77,8 +91,9 @@ const Game = {
 
     moveAll(){
 
-        console.log(this.heroShip)
+        this.enemySquares.forEach(elm => elm.move())
         this.heroShip.moveHero()
+
         
 
     },
@@ -87,6 +102,7 @@ const Game = {
         
         this.background.draw()
         this.heroShip.drawHero()
+        this.enemySquares.forEach(elm => elm.draw())
         
     },
 
@@ -118,7 +134,7 @@ const Game = {
                 case this.keys.D: 
                     this.keys.dIsDown = true
                     break;
-        }
+        }}
 
         //updating the IsDown values to false when keays are release. 
         document.onkeyup = e => {
@@ -138,19 +154,35 @@ const Game = {
         }
         }
 
-
-
-        }
+        document.onclick = () => { this.mouse.posX = event.clientX;
+             this.mouse.posY = event.clientY
+            
+             this.heroShip.shoot()
+            }
+        
+       
 
     },
 
-    // generateBigSquares(){
-    //     if(this.counter % 120 == 0 ){
+    generateBigSquares(){
+        if(this.counter % 120 == 0 ){
         
-    //     this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
+        this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
+    }},
 
 
-    // }}
+    deleteBigSquares(){
+
+        this.enemySquares.forEach((square, idx) => {
+            if (square._posX <= -square._width -10 ||
+                square._posX > this.canvas.width + square._width + 10 ||
+                square._posY > this.canvas.height + square._height + 10 ||
+                square._posY < 0 - square._height - 10 ) {
+              this.enemySquares.splice(idx, 1);
+            }
+          })
+
+    }
     
 
 

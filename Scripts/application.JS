@@ -171,6 +171,10 @@ const Game = {
         this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
     }},
 
+    generateSmallSquares(parentSquare){
+        this.enemySquares.push(new RedSmallSquare(this.ctx,this.canvas.width, this.canvas.height,parentSquare))
+    },
+
 
     deleteBigSquares(){
 
@@ -205,22 +209,18 @@ const Game = {
                this.heroShip._shipX <= square._posX + square._width &&
                this.heroShip._shipY <= square._posY + square._height &&
                this.heroShip._shipY + this.heroShip._height >= square._posY
-
         )
-
-
     },
 
 
     isBulletImpact(){
 
-        
         this.enemySquares.forEach((square, squareId) => {this.heroShip._bullets.forEach((bullet,bulletId) => {
             
-            console.log(bullet._bulletPosX >= square._posX)
-            console.log(bullet._bulletPosX <= square._posX + square._width)
-            console.log(bullet._bulletPosY <= square._posY + square._height)
-            console.log(bullet._bulletPosY >= square._posY)
+            // console.log(bullet._bulletPosX >= square._posX)
+            // console.log(bullet._bulletPosX <= square._posX + square._width)
+            // console.log(bullet._bulletPosY <= square._posY + square._height)
+            // console.log(bullet._bulletPosY >= square._posY)
 
             if(
                 bullet._bulletPosX >= square._posX &&
@@ -229,27 +229,25 @@ const Game = {
                 bullet._bulletPosY >= square._posY
                 ){
                     this.heroShip._bullets.splice(bulletId , 1)
-                    this.enemySquares.splice(squareId,1)
-                    
-                    
+
+                    if(this.enemySquares[squareId]._name === "BlueBigSquare"){
+                        
+                        this.generateSmallSquares(this.enemySquares[squareId])
+                        this.generateSmallSquares(this.enemySquares[squareId])
+                        this.enemySquares.splice(squareId,1)
+                        
+                    }else{
+                        this.enemySquares.splice(squareId,1)
+                    }
+                 
+
+                
                 }
             }
         )})
     }
 
 
-    // isCollision() {
-    //     // funcion para comprobar colisiones
-    
-    //     return this.obstacles.some(
-    //       obs =>
-    //         this.player.posX + this.player.width >= obs.posX &&
-    //         this.player.posY + this.player.height >= obs.posY &&
-    //         this.player.posX <= obs.posX + obs.width
-    //     );
-    //     //fin del juego, detenemos intervalo
-    //   },
-    
     
 
 

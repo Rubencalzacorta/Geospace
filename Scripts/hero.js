@@ -16,6 +16,8 @@ class Hero {
         this._bullets = []
         this._mouse = mouse
         this._isCollision = false
+        
+
         }
 
 

@@ -1,5 +1,6 @@
 class BlueBigSquare{
     constructor(ctx, screenwidth, screenheight){
+    this._name = "BlueBigSquare"
     this._ctx = ctx
     this._width = 200
     this._height = 200
@@ -9,15 +10,18 @@ class BlueBigSquare{
     this._velY = 0
     this._screenWidth = screenwidth
     this._screenHeight = screenheight
+    this._color = "blue"
 
-    this.generateSpecs()
+    this.generatePosition()
+    this.generateSpeeds()
+
     }
 
 
     draw(){
         
         this._ctx.lineWidth = 1
-        this._ctx.strokeStyle = 'blue'
+        this._ctx.strokeStyle = this._color
         this._ctx.strokeRect(this._posX, this._posY, this._width, this._height)
     }
 
@@ -27,7 +31,7 @@ class BlueBigSquare{
 
     }
 
-    generateSpecs(){
+    generatePosition(){
 
         // setting X and Y coordinates such as they never appear inside the screen
 
@@ -52,6 +56,9 @@ class BlueBigSquare{
             this._posY = Math.random()*(this._screenHeight+2*this._height) -this._height
 
         }
+    }
+
+    generateSpeeds(){
 
 
        //generate speeds 
@@ -75,8 +82,6 @@ class BlueBigSquare{
         }
 
         // console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
-
-
     }
 
 }
@@ -85,60 +90,36 @@ class BlueBigSquare{
 //============================================================
 
 
-class BlueSmallSquare{
-    constructor(ctx, screenwidth, screenheight, posX, posY){
-    this._ctx = ctx
+class RedSmallSquare extends BlueBigSquare{
+    constructor(ctx, screenwidth, screenheight, parentSquare){
+        super(ctx, screenwidth, screenheight)
+    
+    this._name = "RedSmallSquare"
     this._width = 50
     this._height = 50
-    this._posX = posX
-    this._posY = posY
+    this._posX = parentSquare._posX + parentSquare._width / 2
+    this._posY = parentSquare._posY + parentSquare._height / 2
     this._velX = 0
     this._velY = 0
-    this._screenWidth = screenwidth
-    this._screenHeight = screenheight
+    this._color = "red"
+    this._velocitycoeficient = 3
 
-    this.generateSpecs()
+    this.generateSpeeds()
+    this.updateSpeed()
     }
 
 
     draw(){
         
         this._ctx.lineWidth = 1
-        this._ctx.strokeStyle = 'blue'
+        this._ctx.strokeStyle = this._color
         this._ctx.strokeRect(this._posX, this._posY, this._width, this._height)
     }
 
-    move(){
-        this._posX += this._velX
-        this._posY += this._velY
+    updateSpeed(){
 
-    }
-
-    generateSpecs(){
-
-
-       //generate speeds 
-        this._velX = Math.random()*5
-        this._velY = Math.random()*5
-
-
-        //adjust speeds depending on the location of the enemy
-
-        if(this._posX < this._screenWidth/2 && this._posY < this._screenHeight/2){
-            this._velX = this._velX
-            this._velY = this._velY
-
-        }else if(this._posX > this._screenWidth/2 && this._posY < this._screenHeight/2){
-            this._velX *= -1
-        }else if(this._posX < this._screenWidth/2 && this._posY > this._screenHeight/2){
-            this._velY *= -1
-        }else if(this._posX > this._screenWidth/2 && this._posY > this._screenHeight/2){
-            this._velX *= -1
-            this._velY *= -1
-        }
-
-        // console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
-
+        this._velX *=  this._velocitycoeficient
+        this._velY *=  this._velocitycoeficient
 
     }
 

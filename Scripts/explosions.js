@@ -15,24 +15,6 @@ class Explosion{
     }
 
     draw(){
-        // console.log(this._ctx)
-
-        // console.log(this._image)
-
-        // console.log(this._image.framesIndex * Math.floor(this._image.width / this._image.frames))
-        // console.log(Math.floor(this._image.width / this._image.frames))
-        // console.log(this._image.height)
-
-        // console.log(this._posX)
-
-        // console.log(this._posY)
-        // console.log(this._width)
-        // console.log(this._height)
-
-
-
-
-
 
 
         this._ctx.drawImage(
@@ -46,9 +28,6 @@ class Explosion{
             this._width,
             this._height          
             )
-
-            console.log(this._image.framesIndex)
-            console.log(this._counter)
 
             this.animate()
         }

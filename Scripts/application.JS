@@ -8,7 +8,8 @@ const Game = {
     score: 0,
     enemySquares: [],
     explosions: [],
-    isPlay: false,
+    isPlay: true,
+    pause: 0,
     keys: {
         W : 87,
         A: 65,
@@ -72,13 +73,17 @@ const Game = {
             this.counter > 5000 ? this.counter = 0 : this.counter ++
 
             //score for time alive
-            this.counter % 60 == 0 ? this.score += 2 : null
+            this.counter % 60 == 0 ? this.score += 10 : null
 
-            this.isBulletImpact()
+            this.isPlay ? this.isBulletImpact() : null
 
-            this.isCollision() ? this.heroShip.reset() : null
+            if(this.isCollision()){
+                this.heroShip.reset()
+                this.isPlay = false
+            } 
 
-            this.generateBigSquares()
+            this.isPlay ? this.generateBigSquares(): null
+
             this.deleteBigSquares()
             this.deleteBullets()
             this.deleteExplosions()
@@ -88,7 +93,6 @@ const Game = {
             
 
             this.clearScreen()
-
             this.moveAll()
             this.drawAll()            
             
@@ -101,16 +105,24 @@ const Game = {
 
     moveAll(){
 
-        this.enemySquares.forEach(elm => elm.move())
+        this.isPlay ?  this.enemySquares.forEach(elm => elm.move()) : null
+
         this.heroShip.moveHero()
     },
 
     drawAll(){
-        
         this.background.draw()
-        this.heroShip.drawHero()
         this.enemySquares.forEach(elm => elm.draw())
         this.explosions.forEach(explosion => explosion.draw())
+
+        if(this.isPlay === false){
+            this.ctx.fillStyle = "rgba(0, 0, 0, 0.85)"
+            this.ctx.fillRect(0,0,this._width, this._height)
+
+        }
+
+        this.heroShip.drawHero()
+
     },
 
 
@@ -162,12 +174,9 @@ const Game = {
 
         document.onclick = () => { this.mouse.posX = event.clientX;
              this.mouse.posY = event.clientY
-            
+
              this.heroShip.shoot()
             }
-        
-       
-
     },
 
     generateBigSquares(){
@@ -214,7 +223,7 @@ const Game = {
 
 
     isCollision(){
-
+       if(this.isPlay){
        return  this.enemySquares.some(
            square => 
                this.heroShip._shipX + this.heroShip._width >= square._posX &&
@@ -222,17 +231,23 @@ const Game = {
                this.heroShip._shipY <= square._posY + square._height &&
                this.heroShip._shipY + this.heroShip._height >= square._posY
         )
+       }else{
+           this.pause ++
+
+           if(this.pause > 180){
+               this.isPlay = true
+               this.pause = 0
+           }
+           
+
+       }
     },
 
 
     isBulletImpact(){
 
         this.enemySquares.forEach((square, squareId) => {this.heroShip._bullets.forEach((bullet,bulletId) => {
-            
-            // console.log(bullet._bulletPosX >= square._posX)
-            // console.log(bullet._bulletPosX <= square._posX + square._width)
-            // console.log(bullet._bulletPosY <= square._posY + square._height)
-            // console.log(bullet._bulletPosY >= square._posY)
+
 
             if(
                 bullet._bulletPosX >= square._posX &&
@@ -241,28 +256,22 @@ const Game = {
                 bullet._bulletPosY >= square._posY
                 ){
                     //create explosion
-                    console.log(bullet._bulletPosX)
-                    console.log(bullet._bulletPosY)
 
                     this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
                     //delete bullet
 
-
-                    console.log(bullet._bulletPosX)
-                    console.log(bullet._bulletPosY)
                     this.heroShip._bullets.splice(bulletId , 1)
 
 
-
-                    console.log(bullet._bulletPosX)
-                    console.log(bullet._bulletPosY)
                     //delete Big squares and create small squares, delete small squares
                     if(this.enemySquares[squareId]._name === "BlueBigSquare"){
                         
                         this.generateSmallSquares(this.enemySquares[squareId])
                         this.generateSmallSquares(this.enemySquares[squareId])
-                        this.enemySquares.splice(squareId,1)
+                        this.generateSmallSquares(this.enemySquares[squareId])
+                        this.generateSmallSquares(this.enemySquares[squareId])
                         
+                        this.enemySquares.splice(squareId,1)
                         
                         
                         this._score += 5

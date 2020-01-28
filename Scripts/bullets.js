@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(ctx, heroShipX, heroShipY, heroShipWidth, heroShipHeight, targetPosX, targetPosY){
+    constructor(ctx, heroShipX, heroShipY, heroShipWidth, heroShipHeight, targetPosX, targetPosY, counter){
         this._ctx = ctx
         this._heroShipX = heroShipX
         this._heroShipY = heroShipY
@@ -18,8 +18,8 @@ class Bullet {
         this._bulletDir = Math.atan2( this._targetPosY - this._heroShipY ,  this._targetPosX - this._heroShipX )
 
 
-        this._velX = 7*Math.cos(this._bulletDir)
-        this._velY = 7*Math.sin(this._bulletDir)
+        this._velX = 4*Math.cos(this._bulletDir)
+        this._velY = 5*Math.sin(this._bulletDir)
 
     }
 
@@ -34,6 +34,10 @@ class Bullet {
         this._bulletPosX += this._velX
 
         this._bulletPosY += this._velY
+
+        this._velX *= 1.02
+        this._velY *= 1.02
+
     }
 
 

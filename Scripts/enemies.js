@@ -2,8 +2,8 @@ class BlueBigSquare{
     constructor(ctx, screenwidth, screenheight){
     this._name = "BlueBigSquare"
     this._ctx = ctx
-    this._width = 200
-    this._height = 200
+    this._width = 300
+    this._height = 300
     this._posX = 0
     this._posY = 0
     this._velX = 0
@@ -21,6 +21,8 @@ class BlueBigSquare{
     draw(){
         
         this._ctx.lineWidth = 1
+        // this._ctx.shadowBlur = 10;
+        // this._ctx.shadowColor = "blue"
         this._ctx.strokeStyle = this._color
         this._ctx.strokeRect(this._posX, this._posY, this._width, this._height)
     }

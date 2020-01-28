@@ -5,7 +5,10 @@ const Game = {
     screenHeight: undefined, 
     fps : 60,
     counter: 0,
+    score: 0,
     enemySquares: [],
+    explosions: [],
+    isPlay: false,
     keys: {
         W : 87,
         A: 65,
@@ -55,7 +58,7 @@ const Game = {
     start(){
 
         //start the hero
-       this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height)
+       this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height, this.counter)
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
@@ -68,11 +71,17 @@ const Game = {
             //add to counter
             this.counter > 5000 ? this.counter = 0 : this.counter ++
 
+            //score for time alive
+            this.counter % 60 == 0 ? this.score += 2 : null
+
             this.isBulletImpact()
+
+            this.isCollision() ? this.heroShip.reset() : null
 
             this.generateBigSquares()
             this.deleteBigSquares()
             this.deleteBullets()
+            this.deleteExplosions()
 
             // console.log(`mouse x ${this.mouse.posX} and mouse y is ${this.mouse.posY}`)
             // console.log(this.enemySquares)
@@ -94,9 +103,6 @@ const Game = {
 
         this.enemySquares.forEach(elm => elm.move())
         this.heroShip.moveHero()
-
-        
-
     },
 
     drawAll(){
@@ -104,9 +110,8 @@ const Game = {
         this.background.draw()
         this.heroShip.drawHero()
         this.enemySquares.forEach(elm => elm.draw())
-        
+        this.explosions.forEach(explosion => explosion.draw())
     },
-
 
 
     clearScreen(){
@@ -201,6 +206,13 @@ const Game = {
         } )
     },
 
+
+    deleteExplosions(){
+        this.explosions.forEach((explosion, idx) => explosion._image.frameIndex > 12 ?  this.explosions.splice(idx,1) : null
+        )
+    },
+
+
     isCollision(){
 
        return  this.enemySquares.some(
@@ -228,16 +240,37 @@ const Game = {
                 bullet._bulletPosY <= square._posY + square._height &&
                 bullet._bulletPosY >= square._posY
                 ){
+                    //create explosion
+                    console.log(bullet._bulletPosX)
+                    console.log(bullet._bulletPosY)
+
+                    this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+                    //delete bullet
+
+
+                    console.log(bullet._bulletPosX)
+                    console.log(bullet._bulletPosY)
                     this.heroShip._bullets.splice(bulletId , 1)
 
+
+
+                    console.log(bullet._bulletPosX)
+                    console.log(bullet._bulletPosY)
+                    //delete Big squares and create small squares, delete small squares
                     if(this.enemySquares[squareId]._name === "BlueBigSquare"){
                         
                         this.generateSmallSquares(this.enemySquares[squareId])
                         this.generateSmallSquares(this.enemySquares[squareId])
                         this.enemySquares.splice(squareId,1)
                         
+                        
+                        
+                        this._score += 5
+
+                        
                     }else{
                         this.enemySquares.splice(squareId,1)
+                        this._score += 8
                     }
                  
 

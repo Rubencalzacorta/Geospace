@@ -1,22 +1,26 @@
 class Hero {
-        constructor(ctx,keys, mouse, screenWidth, screenHeight){
+        constructor(ctx,keys, mouse, screenWidth, screenHeight, counter){
         this._ctx = ctx
         this._screenWidth = screenWidth
         this._screenHeight = screenHeight
         this._shipX= 200
         this._shipY= 200,
         this._height= 30,
-        this._width= 20,
+        this._width= 30,
         this._velX = 0,
         this._velY= 0,
         this._acceleration= 0.1
         this._image = new Image()
-        this._image.src = "/images/heroship/ship stop.png"
+        this._image.src = "/images/heroship/pixil-frame-0.png"
         this._keys = keys
+        this._counter = counter
+        this._bulletReady = true
+
         this._bullets = []
         this._mouse = mouse
         this._isCollision = false
         
+        this._lifes = 3
 
         }
 
@@ -25,12 +29,7 @@ class Hero {
 
         //drawing the image including the movement. 
         this._ctx.drawImage(this._image, this._shipX, this._shipY, this._width, this._height)
-        this._bullets.forEach(bullet => bullet.draw())
-
-    
-        
-        
-        
+        this._bullets.forEach(bullet => bullet.draw())        
     }
 
     moveHero(){
@@ -80,20 +79,22 @@ class Hero {
         }
 
 
-
-
-
         //move bullet
         this._bullets.forEach(bullet => bullet.move())
 
     }
 
         shoot(){
-            // console.log(this._mouse.posX, this._mouse.posY + "-------------" + this._shipX, this._shipY)
             
-            this._bullets.push(new Bullet(this._ctx,this._shipX, this._shipY, this._width, this._height, this._mouse.posX, this._mouse.posY))
+            this._bullets.push(new Bullet(this._ctx,this._shipX, this._shipY, this._width, this._height, this._mouse.posX, this._mouse.posY, this._counter))
+        
+        
         }
 
-
+        reset(){
+            this._lifes -= 1
+            this._shipX = this._screenWidth / 2
+            this._shipY = this._screenWidth / 2
+        }
 
 }

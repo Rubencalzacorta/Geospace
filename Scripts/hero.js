@@ -15,6 +15,7 @@ class Hero {
         this._keys = keys
         this._bullets = []
         this._mouse = mouse
+        this._isCollision = false
         }
 
 
@@ -23,6 +24,9 @@ class Hero {
         //drawing the image including the movement. 
         this._ctx.drawImage(this._image, this._shipX, this._shipY, this._width, this._height)
         this._bullets.forEach(bullet => bullet.draw())
+
+    
+        
         
         
     }
@@ -74,13 +78,17 @@ class Hero {
         }
 
 
+
+
+
         //move bullet
         this._bullets.forEach(bullet => bullet.move())
 
     }
 
         shoot(){
-            console.log(this._mouse.posX, this._mouse.posY + "-------------" + this._shipX, this._shipY)
+            // console.log(this._mouse.posX, this._mouse.posY + "-------------" + this._shipX, this._shipY)
+            
             this._bullets.push(new Bullet(this._ctx,this._shipX, this._shipY, this._width, this._height, this._mouse.posX, this._mouse.posY))
         }
 

@@ -10,7 +10,7 @@ class Background {
 
 
         //stars details
-        this._numberOfStars =500
+        this._numberOfStars =300
         this._starsPosX = []
         this._starsPosY = []
         this._starsRadius =[]

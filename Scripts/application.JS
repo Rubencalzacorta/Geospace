@@ -59,21 +59,22 @@ const Game = {
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
-
-
-        
         
         //game interval
         this.interval = setInterval(() => {
             
+
+
             //add to counter
             this.counter > 5000 ? this.counter = 0 : this.counter ++
 
-            
+            this.isBulletImpact()
+
             this.generateBigSquares()
             this.deleteBigSquares()
+            this.deleteBullets()
 
-            console.log(`mouse x ${this.mouse.posX} and mouse y is ${this.mouse.posY}`)
+            // console.log(`mouse x ${this.mouse.posX} and mouse y is ${this.mouse.posY}`)
             // console.log(this.enemySquares)
             
 
@@ -182,7 +183,73 @@ const Game = {
             }
           })
 
+    },
+
+    deleteBullets(){
+
+        this.heroShip._bullets.forEach((bullet, idx) =>{
+            if(bullet._bulletPosX < 0 ||
+                bullet._bulletPosX > this.canvas.width ||
+                bullet._bulletPosY < 0 ||
+                bullet._bulletPosY > this.canvas.height){
+                    this.heroShip._bullets.splice(idx , 1)
+                }
+        } )
+    },
+
+    isCollision(){
+
+       return  this.enemySquares.some(
+           square => 
+               this.heroShip._shipX + this.heroShip._width >= square._posX &&
+               this.heroShip._shipX <= square._posX + square._width &&
+               this.heroShip._shipY <= square._posY + square._height &&
+               this.heroShip._shipY + this.heroShip._height >= square._posY
+
+        )
+
+
+    },
+
+
+    isBulletImpact(){
+
+        
+        this.enemySquares.forEach((square, squareId) => {this.heroShip._bullets.forEach((bullet,bulletId) => {
+            
+            console.log(bullet._bulletPosX >= square._posX)
+            console.log(bullet._bulletPosX <= square._posX + square._width)
+            console.log(bullet._bulletPosY <= square._posY + square._height)
+            console.log(bullet._bulletPosY >= square._posY)
+
+            if(
+                bullet._bulletPosX >= square._posX &&
+                bullet._bulletPosX <= square._posX + square._width &&
+                bullet._bulletPosY <= square._posY + square._height &&
+                bullet._bulletPosY >= square._posY
+                ){
+                    this.heroShip._bullets.splice(bulletId , 1)
+                    this.enemySquares.splice(squareId,1)
+                    
+                    
+                }
+            }
+        )})
     }
+
+
+    // isCollision() {
+    //     // funcion para comprobar colisiones
+    
+    //     return this.obstacles.some(
+    //       obs =>
+    //         this.player.posX + this.player.width >= obs.posX &&
+    //         this.player.posY + this.player.height >= obs.posY &&
+    //         this.player.posX <= obs.posX + obs.width
+    //     );
+    //     //fin del juego, detenemos intervalo
+    //   },
+    
     
 
 

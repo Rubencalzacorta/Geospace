@@ -11,12 +11,15 @@ class Bullet {
         this._bulletPosY = this._heroShipY + heroShipHeight/2
      
 
-        this._bulletRadius = 2
+        this._bulletRadius = 4
         
-        this._slope = (this._heroShipY - this._targetPosY)/( this._heroShipX - this._targetPosX )
+        // this._slope = (this._heroShipY - this._targetPosY)/( this._heroShipX - this._targetPosX )
         
-        this._velX = 5*this._slope
-        this._velY = 5*this._slope
+        this._bulletDir = Math.atan2( this._targetPosY - this._heroShipY ,  this._targetPosX - this._heroShipX )
+
+
+        this._velX = 7*Math.cos(this._bulletDir)
+        this._velY = 7*Math.sin(this._bulletDir)
 
     }
 
@@ -31,7 +34,6 @@ class Bullet {
         this._bulletPosX += this._velX
 
         this._bulletPosY += this._velY
-
     }
 
 

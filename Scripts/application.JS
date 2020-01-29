@@ -44,6 +44,12 @@ const Game = {
         acceleration: 0.1,
     },
 
+    
+
+
+
+
+
 
     init() {
         this.canvas = document.getElementById('myCanvas')
@@ -287,9 +293,17 @@ const Game = {
                 }
             }
         )})
-    }
+    },
+
+    // drawLives(){
+
+    //     if(this.heroShip._lifes === 3){
+
+    //     }
 
 
+
+    // }
     
 
 

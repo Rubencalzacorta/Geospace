@@ -11,6 +11,9 @@ class Bullet {
         this._bulletPosY = this._heroShipY + heroShipHeight/2
      
 
+        this._bulletWidth = 20
+        this._bulletHeight = 20
+
         this._bulletRadius = 4
         
         // this._slope = (this._heroShipY - this._targetPosY)/( this._heroShipX - this._targetPosX )
@@ -20,6 +23,16 @@ class Bullet {
 
         this._velX = 4*Math.cos(this._bulletDir)
         this._velY = 5*Math.sin(this._bulletDir)
+
+        this._counter = counter
+
+        this._image = new Image()
+        this._image.src = "../images/bullet/bulletSprite.png"
+
+        this._image.frames = 14
+        this._image.framesIndex = 0
+
+        
 
     }
 
@@ -43,12 +56,45 @@ class Bullet {
 
     draw(){
         
-        this._ctx.beginPath()
-        this._ctx.fillStyle = "red";
-        this._ctx.arc(this._bulletPosX, this._bulletPosY, this._bulletRadius, 0, Math.PI * 2);
-        this._ctx.fill();
-        this._ctx.closePath()
+        console.log(this._image)
+        console.log( this._image.framesIndex * Math.floor(this._image.width / this._image.frames))
+        console.log(Math.floor(this._image.width / this._image.frames))
+        console.log(this._image.height)
+        console.log(this._bulletPosX)
+        console.log(this._bulletPosY)
+        console.log(this._bulletWidth)
+        console.log(this._bulletHeight)
+        
+        
+        
+        
+        
+        
+        this._ctx.drawImage(
+            this._image,
+            this._image.framesIndex * Math.floor(this._image.width / this._image.frames),
+            0,
+            Math.floor(this._image.width / this._image.frames),
+            this._image.height,
+            this._bulletPosX,
+            this._bulletPosY,
+            this._bulletWidth,
+            this._bulletHeight          
+            )
+            
+            
+            this.animate()
+        }
+        
+        animate() {
+
+        this._counter % 3 == 0 ? this._image.framesIndex++ : null
+
+        this._image.framesIndex > this._image.frames ? this._image.framesIndex = 0 : null
+
+        this._counter ++
     }
+    
 
 
 }

@@ -16,7 +16,6 @@ class Explosion{
 
     draw(){
 
-
         this._ctx.drawImage(
             this._image,
             this._image.framesIndex * Math.floor(this._image.width / this._image.frames),

@@ -11,7 +11,7 @@ class Hero {
         this._velY= 0,
         this._acceleration= 0.1
         this._image = new Image()
-        this._image.src = "/images/heroship/pixil-frame-0.png"
+        this._image.src = "/images/heroship/ovni.png"
         this._keys = keys
         this._counter = counter
         this._bulletReady = true
@@ -95,6 +95,8 @@ class Hero {
             this._lifes -= 1
             this._shipX = this._screenWidth / 2
             this._shipY = this._screenWidth / 2
+            this._velX = 0
+            this._velY = 0
         }
 
 }

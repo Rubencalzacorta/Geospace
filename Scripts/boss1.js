@@ -14,22 +14,26 @@ class Boss1{
     this._velY = 5
     this._color = "orange"
     this._life = 50
-    this.isHit = true
+    this._isHit = true
+
     }
 
     draw(){
 
-        if(this.isHit){
+        if(this._isHit){
         this._ctx.beginPath()
-        this._ctx.lineWidth = 5
+        this._ctx.lineWidth = 10
         this._ctx.strokeStyle = "white"
         this._ctx.fillStyle = "rgba(0, 0, 0, 0.50)";
         this._ctx.arc(this._posX, this._posY, this._radius, 0, Math.PI * 2);
         this._ctx.fill();
         this._ctx.stroke()
 
+        this._isHit = false
+
+
         }else{
-        console.log("hola")
+       
         this._ctx.beginPath()
         this._ctx.lineWidth = 2
         this._ctx.strokeStyle = this._color
@@ -37,9 +41,15 @@ class Boss1{
         this._ctx.arc(this._posX, this._posY, this._radius, 0, Math.PI * 2);
         this._ctx.fill();
         this._ctx.stroke()
+   
 
          }
 
+    }
+
+    hit(){
+        this._life --
+        this._isHit = true
     }
 
 

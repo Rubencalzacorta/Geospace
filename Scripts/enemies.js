@@ -127,14 +127,21 @@ class RedSmallSquare extends BlueBigSquare{
 
 }
 
-class bossKids{
-    Constructor(ctx, screenwidth, screenheight, parentCircle){
+
+//=============================================================
+
+class BossKids{
+    constructor(ctx, screenwidth, screenheight, parentCircle){
         this._ctx = ctx
         this._screenWidth = screenwidth
         this._screenHeight = screenheight
         this._posX = parentCircle._posX
         this._posY = parentCircle._posY
-        this._radius = 20
+        
+        // this._posX = 800
+        // this._posY = 800
+        
+        this._radius = 10
 
         this._velX = 0
         this._velY = 0
@@ -152,9 +159,9 @@ class bossKids{
 
     draw(){  
             this._ctx.beginPath()
-            this._ctx.lineWidth = 1
+            this._ctx.lineWidth = 3
             this._ctx.strokeStyle = this._color
-            this._ctx.fillStyle = "rgba(254, 254, 254, 0.50)";
+            this._ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
             this._ctx.arc(this._posX, this._posY, this._radius, 0, Math.PI * 2);
             this._ctx.fill();
             this._ctx.stroke()
@@ -171,8 +178,8 @@ class bossKids{
 
 
         //generate speeds 
-         this._velX = Math.random()*2
-         this._velY = Math.random()*2
+         this._velX = Math.random()*5
+         this._velY = Math.random()*5
  
  
          //adjust speeds depending on the location of the enemy
@@ -190,6 +197,5 @@ class bossKids{
              this._velY *= -1
          }
  
-         // console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
      }
 }

@@ -7,6 +7,7 @@ const Game = {
     counter: 0,
     score: 0,
     enemySquares: [],
+    bossKids:[],
     explosions: [],
     isPlay: true,
     pause: 0,
@@ -78,6 +79,8 @@ const Game = {
         
         this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height)
 
+        // this.bossKids.push(new BossKids(this.ctx,this.canvas.width, this.canvas.height))
+
         //game interval
         this.interval = setInterval(() => {
             
@@ -93,7 +96,6 @@ const Game = {
             }
 
             
-
             //score for time alive
             this.counter % 60 == 0 ? this.score += 10 : null
 
@@ -103,16 +105,17 @@ const Game = {
                 this.heroShip.reset()
                 this.isPlay = false
             } 
+            
+            if(this.isCollisionCircles()){
+                this.heroShip.reset()
+                this.isPlay = false
+            } 
 
             this.isPlay ? this.generateBigSquares(): null
 
             this.deleteBigSquares()
             this.deleteBullets()
             this.deleteExplosions()
-
-            // console.log(`mouse x ${this.mouse.posX} and mouse y is ${this.mouse.posY}`)
-            // console.log(this.enemySquares)
-            
 
             this.clearScreen()
             this.moveAll()
@@ -128,13 +131,17 @@ const Game = {
     moveAll(){
 
         this.isPlay ?  this.enemySquares.forEach(elm => elm.move()) : null
-
+        this.isPlay ? this.bossKids.forEach(elm => elm.move()) : null
         this.heroShip.moveHero()
     },
 
     drawAll(){
+
+        this.bossKids.forEach(kid => kid.draw())
+
         this.background.draw()
         this.enemySquares.forEach(elm => elm.draw())
+        this.bossKids.forEach(elm => elm.draw())
         this.explosions.forEach(explosion => explosion.draw())
         this.drawLives()
         this.drawScore()
@@ -258,6 +265,7 @@ const Game = {
 
     isCollision(){
        if(this.isPlay){
+           
        return  this.enemySquares.some(
            square => 
                this.heroShip._shipX + this.heroShip._width >= square._posX &&
@@ -272,9 +280,29 @@ const Game = {
                this.isPlay = true
                this.pause = 0
            }
-           
+       } 
 
-       }
+    },
+
+
+    isCollisionCircles(){
+
+
+        if(this.isPlay){
+            
+            return  this.bossKids.some(
+                kid => (this.heroShip._shipX - kid._posX)**2 + (this.heroShip._shipY - kid._posY)**2 < (kid._radius+10)**2                   
+             )
+            
+        }else{ 
+            this.pause ++
+            if(this.pause > 180){
+                this.isPlay = true
+                this.pause = 0
+            }
+        } 
+
+
     },
 
 
@@ -306,8 +334,6 @@ const Game = {
                         this.generateSmallSquares(this.enemySquares[squareId])
                         
                         this.enemySquares.splice(squareId,1)
-                        
-                        
                         this.score += 5
 
                         
@@ -322,8 +348,63 @@ const Game = {
             }
         )})
     
+        //colission with boss
+        if(this.boss){
+            this.heroShip._bullets.forEach((bullet, bulletId) =>{
+                
+                this.distanceX =  bullet._bulletPosX -this.boss._posX
+                this.distanceY =  bullet._bulletPosY -this.boss._posY
+
+                if(this.distanceX**2 + this.distanceY**2 < this.boss._radius**2){
+                    this.boss.hit()
+                    this.heroShip._bullets.splice(bulletId , 1)
+                    this.score += 2
+                   
+
+
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+                    this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
+
+                }
+
+            })
+
             
 
+            //colission with boss kids circles
+            this.bossKids.forEach((circle, circleId) => {
+                this.heroShip._bullets.forEach((bullet, bulletId) => {
+
+                    this.distanceX =  bullet._bulletPosX - circle._posX
+                    this.distanceY =  bullet._bulletPosY - circle._posY
+
+                    if(this.distanceX**2 + this.distanceY**2 < circle._radius**2){
+
+                        this.score += 5
+
+                        this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+                        
+                        this.heroShip._bullets.splice(bulletId , 1)
+                        this.bossKids.splice(circleId, 1)
+
+                    }
+
+                })
+            })
+
+
+
+
+
+        }
+    
+    
+    
+    
     
     },
 
@@ -336,9 +417,12 @@ const Game = {
             this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
 
         }else if (this.heroShip._lifes ===2){
+
             this.ctx.drawImage(this.images.lifesImage, this.canvas.width -140, this.canvas.height -60, 40, 40)
             this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
+
         }else if(this.heroShip._lifes ===1){
+
             this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
 
         }

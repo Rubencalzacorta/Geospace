@@ -54,21 +54,7 @@ class Bullet {
     }
 
 
-    draw(){
-        
-        console.log(this._image)
-        console.log( this._image.framesIndex * Math.floor(this._image.width / this._image.frames))
-        console.log(Math.floor(this._image.width / this._image.frames))
-        console.log(this._image.height)
-        console.log(this._bulletPosX)
-        console.log(this._bulletPosY)
-        console.log(this._bulletWidth)
-        console.log(this._bulletHeight)
-        
-        
-        
-        
-        
+    draw(){        
         
         this._ctx.drawImage(
             this._image,

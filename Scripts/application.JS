@@ -10,6 +10,9 @@ const Game = {
     explosions: [],
     isPlay: true,
     pause: 0,
+    currentwave: 1, 
+    waveDuration: 90*this.fps,
+    timeToNextWave: this.waveDuration - this.counter,
     keys: {
         W : 87,
         A: 65,
@@ -44,11 +47,9 @@ const Game = {
         acceleration: 0.1,
     },
 
-    
-
-
-
-
+    images:{
+        lifesImage: new Image(),
+    },
 
 
     init() {
@@ -58,6 +59,11 @@ const Game = {
         this.height = window.innerHeight
         this.canvas.width = this.width
         this.canvas.height = this.height
+        this.images.lifesImage.src = "../images/lives/life.png"
+        this.scoreboard = ScoreBoard
+        this.scoreboard.init(this.ctx)
+
+
         this.start()
         this.enventListeners()
     },
@@ -70,13 +76,23 @@ const Game = {
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
         
+        this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height)
+
         //game interval
         this.interval = setInterval(() => {
             
 
 
-            //add to counter
-            this.counter > 5000 ? this.counter = 0 : this.counter ++
+            //add to counter and wave counter
+            if(this.counter > 2400){
+                this.currentwave ++
+                this.counter = 0
+                this.enemySquares = [];
+            }else{
+                this.counter ++
+            }
+
+            
 
             //score for time alive
             this.counter % 60 == 0 ? this.score += 10 : null
@@ -120,6 +136,9 @@ const Game = {
         this.background.draw()
         this.enemySquares.forEach(elm => elm.draw())
         this.explosions.forEach(explosion => explosion.draw())
+        this.drawLives()
+        this.drawScore()
+        this.boss.draw()
 
         if(this.isPlay === false){
             this.ctx.fillStyle = "rgba(0, 0, 0, 0.85)"
@@ -186,10 +205,19 @@ const Game = {
     },
 
     generateBigSquares(){
-        if(this.counter % 120 == 0 ){
-        
-        this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height))
-    }},
+
+        switch(this.currentwave){
+            case 1:
+                this.counter % 120 == 0 ? this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)) : null
+                break;
+            case 2: 
+                this.counter % 100 == 0 ? this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)) : null
+                break;
+            case 3:
+                this.counter % 80 == 0 ? this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)) : null
+                break;
+        }
+    },
 
     generateSmallSquares(parentSquare){
         this.enemySquares.push(new RedSmallSquare(this.ctx,this.canvas.width, this.canvas.height,parentSquare))
@@ -280,12 +308,12 @@ const Game = {
                         this.enemySquares.splice(squareId,1)
                         
                         
-                        this._score += 5
+                        this.score += 5
 
                         
                     }else{
                         this.enemySquares.splice(squareId,1)
-                        this._score += 8
+                        this.score += 8
                     }
                  
 
@@ -293,17 +321,34 @@ const Game = {
                 }
             }
         )})
+    
+            
+
+    
     },
 
-    // drawLives(){
+    drawLives(){
 
-    //     if(this.heroShip._lifes === 3){
+        if(this.heroShip._lifes === 3){
 
-    //     }
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -200, this.canvas.height -60, 40, 40)
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -140, this.canvas.height -60, 40, 40)
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
+
+        }else if (this.heroShip._lifes ===2){
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -140, this.canvas.height -60, 40, 40)
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
+        }else if(this.heroShip._lifes ===1){
+            this.ctx.drawImage(this.images.lifesImage, this.canvas.width -80, this.canvas.height -60, 40, 40)
+
+        }
+    },
 
 
-
-    // }
+    drawScore() {
+        //con esta funcion pintamos el marcador
+        this.scoreboard.update(this.score);
+      },
     
 
 

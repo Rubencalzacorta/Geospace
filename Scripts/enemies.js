@@ -126,3 +126,70 @@ class RedSmallSquare extends BlueBigSquare{
     }
 
 }
+
+class bossKids{
+    Constructor(ctx, screenwidth, screenheight, parentCircle){
+        this._ctx = ctx
+        this._screenWidth = screenwidth
+        this._screenHeight = screenheight
+        this._posX = parentCircle._posX
+        this._posY = parentCircle._posY
+        this._radius = 20
+
+        this._velX = 0
+        this._velY = 0
+
+        this._colorA = Math.floor(Math.random()*255)
+        this._colorB = Math.floor(Math.random()*255)
+        this._colorC = Math.floor(Math.random()*255)
+
+        this._color = `rgb(${this._colorA.toString()}, ${this._colorB.toString()}, ${this._colorC.toString()})`
+
+        this.generateSpeeds()
+
+    }
+
+
+    draw(){  
+            this._ctx.beginPath()
+            this._ctx.lineWidth = 1
+            this._ctx.strokeStyle = this._color
+            this._ctx.fillStyle = "rgba(254, 254, 254, 0.50)";
+            this._ctx.arc(this._posX, this._posY, this._radius, 0, Math.PI * 2);
+            this._ctx.fill();
+            this._ctx.stroke()
+
+    }
+
+
+    move(){
+        this._posX += this._velX
+        this._posY += this._velY
+    }
+
+    generateSpeeds(){
+
+
+        //generate speeds 
+         this._velX = Math.random()*2
+         this._velY = Math.random()*2
+ 
+ 
+         //adjust speeds depending on the location of the enemy
+ 
+         if(this._posX < this._screenWidth/2 && this._posY < this._screenHeight/2){
+             this._velX = this._velX
+             this._velY = this._velY
+ 
+         }else if(this._posX > this._screenWidth/2 && this._posY < this._screenHeight/2){
+             this._velX *= -1
+         }else if(this._posX < this._screenWidth/2 && this._posY > this._screenHeight/2){
+             this._velY *= -1
+         }else if(this._posX > this._screenWidth/2 && this._posY > this._screenHeight/2){
+             this._velX *= -1
+             this._velY *= -1
+         }
+ 
+         // console.log(`posicion x is ${this._posX} and position y is ${this._posY}`)
+     }
+}

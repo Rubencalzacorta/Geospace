@@ -5,4 +5,52 @@
 
 #myCanvas {
     background-color: black;
+    position: relative;
+    z-index: 0;
 }
+
+#score, #wave, #time-to-next-wave {
+    position: absolute;
+}
+
+/* #infobar{
+    position: absolute;
+    left: 0;
+    width: 100;
+    height: 50px;
+    background-color: rgb(black, black, black, 0.5);
+    z-index: 5;
+
+} */
+
+#score {
+    left: 45%;
+    top: 20px;
+    color:white;
+    z-index: 11;
+    text-align: left;
+    width: 100px
+}
+
+
+#wave {
+    left: 5%;
+    top: 20px;
+    color:white;
+    z-index: 11;
+    text-align: left;
+    width: 100px
+}
+
+
+#time-to-next-wave {
+    left: 80%;
+    top: 20px;
+    color:white;
+    z-index: 11;
+    text-align: left;
+    width: 200px
+}
+
+
+

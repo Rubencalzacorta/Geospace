@@ -11,9 +11,11 @@ const Game = {
     explosions: [],
     isPlay: true,
     pause: 0,
-    currentwave: 1, 
+    currentWave: 1, 
     waveDuration: 300,
     timeToNextWave: this.waveDuration - this.counter,
+    messageTime: 300,
+    messageCounter: 0,
     keys: {
         W : 87,
         A: 65,
@@ -82,14 +84,16 @@ const Game = {
         
         
         //game interval
-        this.wave ==4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
+        this.wave > 4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
 
         this.interval = setInterval(() => {
             
             this.clearScreen()
             
             // console.log(this.counter)
-            console.log(this.currentwave)
+            // console.log(`this is the current wave ${this.currentwave} -- and this is the counter ${this.counter}-- and this is the wavetime ${this.waveDuration}---and this is the messagecounter ${this.messageCounter}`)
+            console.log(this.boss)
+
 
             //score for time alive
             this.counter % 60 == 0 ? this.score += 10 : null
@@ -116,22 +120,39 @@ const Game = {
             this.drawAll() 
             this.moveAll()
 
+       
             //add to counter and wave counter
             if(this.counter > this.waveDuration){
-                
-                this.enemySquares = [];
-                this.captainMessage(this.currentwave)
 
-                setTimeout(() => {
+                    this.messageCounter ++ 
 
-                   this.currentwave ++
-                   this.counter = 0
+                    if(this.messageCounter > 0 && this.messageCounter < this.messageTime){
+                        console.log("hola")
+                        this.enemySquares = [];
+                        this.captainMessage(this.currentWave)
 
-                }, 5000);
+                    }else{
+                        this.messageCounter = 0
+                        this.counter = 0
+                        this.currentWave ++
 
+                        console.log(this.currentWave)
+                        this.currentWave == 4? console.log("creating boss") : null
+                        this.currentWave == 4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
+                    }
             }else{
                 this.counter ++
             }
+                
+            //         this.counter = 0
+                
+            //        this.currentwave ++
+
+            //     // }, 5000);
+
+            // }else{
+            //     this.counter ++
+            // }
             
             
         }, 1000/this.fps);
@@ -228,7 +249,7 @@ const Game = {
 
     generateBigSquares(){
 
-        switch(this.currentwave){
+        switch(this.currentWave){
             case 1:
                 this.counter % 120 == 0 ? this.enemySquares.push(new BlueBigSquare(this.ctx,this.canvas.width, this.canvas.height)) : null
                 break;
@@ -458,12 +479,21 @@ const Game = {
         switch(wave){
 
             case 1:       
-                console.log("enter case")
+            console.log("enter case")
+
+
+                //text of message
+                this.message1Image = new Image()
+                this.message1Image.src = "../images/captain/Mensaje1.png"
+                this.ctx.drawImage(this.message1Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
+                    
+                //box of text
                 this.ctx.lineWidth = 5
                 this.ctx.strokeStyle = "lightgrey"
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
                 this.ctx.strokeRect(this.canvas.width-500, this.canvas.height-238, 310, 214)
                 
+                //commander picture
                 this.ctx.drawImage(this.commanderImage, this.canvas.width-200, this.canvas.height-240, 180, 220)
 
             break;
@@ -489,7 +519,23 @@ const Game = {
 
         }
 
+    isMissionAccomplished(){
+        if(this.boss){
+            if(this.boss._life == 0){
 
+                this.isPlay = false
+
+                if(this.counter % 30 == 0){
+                    a
+                }
+
+
+            }
+
+
+
+        }
+    }
 
 
 

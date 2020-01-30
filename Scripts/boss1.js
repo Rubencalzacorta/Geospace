@@ -59,9 +59,9 @@ class Boss1{
     }
 
     lifeBar(){
+
+
         
-
-
     }
 
 

@@ -10,7 +10,7 @@ class Boss1{
     this._velX = -.5
     this._velY = 0
     this._color = "orange"
-    this._life = 50
+    this._life = 20
     this._isHit = true
     
 

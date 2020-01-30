@@ -12,9 +12,9 @@ const Game = {
     isPlay: true,
     pause: 0,
     currentWave: 1, 
-    waveDuration: 300,
-    timeToNextWave: this.waveDuration - this.counter,
-    messageTime: 300,
+    waveDuration: 900,
+    timeToNextWave: 900 ,
+    messageTime: 360,
     messageCounter: 0,
     keys: {
         W : 87,
@@ -54,6 +54,12 @@ const Game = {
         lifesImage: new Image(),
     },
 
+    sounds:{
+        background: new Audio("../sounds/ambience.mp3"),
+        explosion: new Sound("..//sounds/explosion.mp3")
+
+    },
+
 
     init() {
         this.canvas = document.getElementById('myCanvas')
@@ -63,8 +69,8 @@ const Game = {
         this.canvas.width = this.width
         this.canvas.height = this.height
         this.images.lifesImage.src = "../images/lives/life.png"
-        this.scoreboard = ScoreBoard
-        this.scoreboard.init(this.ctx)
+        // this.backgroundMusic = new sound("../sounds/ambience.mp3")
+        
 
 
         this.start()
@@ -72,26 +78,21 @@ const Game = {
     },
 
     start(){
-
+        this
         //start the hero
         this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height, this.counter)
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
         
-        
-        
-        
-        
-        //game interval
-        this.wave > 4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
 
         this.interval = setInterval(() => {
             
+            // this.sounds.background.play()
+
             this.clearScreen()
             
-            // console.log(this.counter)
-            // console.log(`this is the current wave ${this.currentwave} -- and this is the counter ${this.counter}-- and this is the wavetime ${this.waveDuration}---and this is the messagecounter ${this.messageCounter}`)
+            
             console.log(this.boss)
 
 
@@ -116,10 +117,10 @@ const Game = {
             this.deleteBullets()
             this.deleteExplosions()
             this.deleteBossKids()
-            
+            this.updateInfoBar()
             this.drawAll() 
             this.moveAll()
-
+            this.isMissionAccomplished()
        
             //add to counter and wave counter
             if(this.counter > this.waveDuration){
@@ -127,7 +128,7 @@ const Game = {
                     this.messageCounter ++ 
 
                     if(this.messageCounter > 0 && this.messageCounter < this.messageTime){
-                        console.log("hola")
+                        
                         this.enemySquares = [];
                         this.captainMessage(this.currentWave)
 
@@ -135,25 +136,17 @@ const Game = {
                         this.messageCounter = 0
                         this.counter = 0
                         this.currentWave ++
+                        this.timeToNextWave = 900
 
-                        console.log(this.currentWave)
+                       //create boss in 4th wave
                         this.currentWave == 4? console.log("creating boss") : null
                         this.currentWave == 4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
                     }
             }else{
                 this.counter ++
+                this.timeToNextWave --
             }
                 
-            //         this.counter = 0
-                
-            //        this.currentwave ++
-
-            //     // }, 5000);
-
-            // }else{
-            //     this.counter ++
-            // }
-            
             
         }, 1000/this.fps);
     },
@@ -188,7 +181,7 @@ const Game = {
         this.explosions.forEach(explosion => explosion.draw())
 
         this.drawLives()
-        this.drawScore()
+    
 
 
     },
@@ -429,6 +422,7 @@ const Game = {
 
                         this.score += 5
 
+                        
                         this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
                         
                         this.heroShip._bullets.splice(bulletId , 1)
@@ -441,6 +435,15 @@ const Game = {
 
         }
     },
+    
+    explosion(ctx, posX, posY, counter){
+
+        this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+
+        this.sounds.explosion.play()
+
+    },
+
 
     drawLives(){
 
@@ -463,14 +466,7 @@ const Game = {
     },
 
 
-    drawScore() {
-        //con esta funcion pintamos el marcador
-        this.scoreboard.update(this.score);
-      },
-    
-
-
-      captainMessage(wave){
+    captainMessage(wave){
           
           this.commanderImage = new Image()
           this.commanderImage.src = "../images/captain/captain.png"
@@ -499,16 +495,30 @@ const Game = {
             break;
 
             case 2: 
+
+                //text of message
+                this.message2Image = new Image()
+                this.message2Image.src = "../images/captain/secondMessage.png"
+                this.ctx.drawImage(this.message2Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
+
+                 //box of text
                 this.ctx.lineWidth = 5
                 this.ctx.strokeStyle = "lightgrey"
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
                 this.ctx.strokeRect(this.canvas.width-500, this.canvas.height-238, 310, 214)
                 
+                //commander picture
                 this.ctx.drawImage(this.commanderImage, this.canvas.width-200, this.canvas.height-240, 180, 220)
 
             break;
 
             case 3: 
+
+                //text of message
+                this.message2Image = new Image()
+                this.message2Image.src = "../images/captain/thirdMessage.png"
+                this.ctx.drawImage(this.message2Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
+
                 this.ctx.lineWidth = 5
                 this.ctx.strokeStyle = "lightgrey"
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
@@ -518,6 +528,7 @@ const Game = {
             break;
 
         }
+    },
 
     isMissionAccomplished(){
         if(this.boss){
@@ -525,8 +536,16 @@ const Game = {
 
                 this.isPlay = false
 
-                if(this.counter % 30 == 0){
-                    a
+                if(this.counter % 2 == 0){
+
+                    
+                    let bossExplosionX = Math.random()*this.boss._radius*2 + this.boss._posX - this.boss._radius
+
+                    let bossExplosionY = Math.random()*this.boss._radius*2 + this.boss._posY - this.boss._radius
+
+                    this.explosions.push(new Explosion(this.ctx, bossExplosionX ,  bossExplosionY, this.counter))
+
+
                 }
 
 
@@ -535,14 +554,33 @@ const Game = {
 
 
         }
-    }
+    },
 
+
+
+    isGameOver(){
+        if(this.heroShip._lifes === 0){
+            console.log("game Over")
+            this.timeToNextWave = 0
+        }
+    },
+
+    updateInfoBar(){
+        console.log("this.timeToNextWave")
+
+        document.querySelector("#score-number").innerHTML = this.score
+        document.querySelector("#wave-number").innerHTML = this.currentWave
+        document.querySelector("#time-left").innerHTML = this.timeToNextWave
+
+
+
+    }
 
 
    
 
 
-      },
+    
     
 
 }

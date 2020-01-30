@@ -13,6 +13,7 @@
 
 #score, #wave, #time-to-next-wave {
     position: absolute;
+    width: 300px;
 }
 
 /* #infobar{
@@ -31,7 +32,7 @@
     color:white;
     z-index: 11;
     text-align: left;
-    width: 100px,
+   
     
 }
 
@@ -42,7 +43,7 @@
     color:white;
     z-index: 11;
     text-align: left;
-    width: 100px
+   
 }
 
 
@@ -52,7 +53,7 @@
     color:white;
     z-index: 11;
     text-align: left;
-    width: 200px
+    
 }
 
 

@@ -11,7 +11,7 @@ class Explosion{
 
         this._image.frames = 12
         this._image.framesIndex = 0
-
+        
     }
 
     draw(){

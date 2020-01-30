@@ -12,7 +12,7 @@ const Game = {
     isPlay: true,
     pause: 0,
     currentwave: 1, 
-    waveDuration: 90*this.fps,
+    waveDuration: 300,
     timeToNextWave: this.waveDuration - this.counter,
     keys: {
         W : 87,
@@ -72,35 +72,32 @@ const Game = {
     start(){
 
         //start the hero
-       this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height, this.counter)
+        this.heroShip = new Hero(this.ctx, this.keys, this.mouse ,this.canvas.width, this.canvas.height, this.counter)
         
         // start the background
         this.background = new Background(this.ctx, 0 ,0 ,this.canvas.width, this.canvas.height)
         
-        this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height)
-
-        // this.bossKids.push(new BossKids(this.ctx,this.canvas.width, this.canvas.height))
-
+        
+        
+        
+        
         //game interval
+        this.wave ==4? this.boss = new Boss1(this.ctx,this.canvas.width, this.canvas.height) : null
+
         this.interval = setInterval(() => {
             
-
-
-            //add to counter and wave counter
-            if(this.counter > 2400){
-                this.currentwave ++
-                this.counter = 0
-                this.enemySquares = [];
-            }else{
-                this.counter ++
-            }
-
+            this.clearScreen()
             
+            // console.log(this.counter)
+            console.log(this.currentwave)
+
             //score for time alive
             this.counter % 60 == 0 ? this.score += 10 : null
-
+            
             this.isPlay ? this.isBulletImpact() : null
-
+            
+            this.isPlay ? this.generateBigSquares(): null
+            
             if(this.isCollision()){
                 this.heroShip.reset()
                 this.isPlay = false
@@ -110,50 +107,68 @@ const Game = {
                 this.heroShip.reset()
                 this.isPlay = false
             } 
-
-            this.isPlay ? this.generateBigSquares(): null
-
+            
             this.deleteBigSquares()
             this.deleteBullets()
             this.deleteExplosions()
-
-            this.clearScreen()
-            this.moveAll()
-            this.drawAll()            
+            this.deleteBossKids()
             
+            this.drawAll() 
+            this.moveAll()
 
-            // console.log(`a is does? ${this.keys.aIsDown}, w is does? ${this.keys.wIsDown},d is does? ${this.keys.dIsDown},s is does? ${this.keys.sIsDown}`)
+            //add to counter and wave counter
+            if(this.counter > this.waveDuration){
+                
+                this.enemySquares = [];
+                this.captainMessage(this.currentwave)
 
+                setTimeout(() => {
+
+                   this.currentwave ++
+                   this.counter = 0
+
+                }, 5000);
+
+            }else{
+                this.counter ++
+            }
+            
+            
         }, 1000/this.fps);
     },
 
 
     moveAll(){
 
-        this.isPlay ?  this.enemySquares.forEach(elm => elm.move()) : null
-        this.isPlay ? this.bossKids.forEach(elm => elm.move()) : null
+        if(this.isPlay){
+
+        this.enemySquares.forEach(elm => elm.move())
+        this.boss? this.bossKids.forEach(elm => elm.move()): null
+        this.boss? this.boss.move() : null
+        }
+
         this.heroShip.moveHero()
+
+        
     },
 
     drawAll(){
 
-        this.bossKids.forEach(kid => kid.draw())
 
         this.background.draw()
-        this.enemySquares.forEach(elm => elm.draw())
-        this.bossKids.forEach(elm => elm.draw())
-        this.explosions.forEach(explosion => explosion.draw())
-        this.drawLives()
-        this.drawScore()
+        this.heroShip.drawHero()
+
+        if(this.boss){
+        this.bossKids.forEach(kid => kid.draw())
         this.boss.draw()
-
-        if(this.isPlay === false){
-            this.ctx.fillStyle = "rgba(0, 0, 0, 0.85)"
-            this.ctx.fillRect(0,0,this._width, this._height)
-
         }
 
-        this.heroShip.drawHero()
+        this.enemySquares.forEach(elm => elm.draw())
+        this.explosions.forEach(explosion => explosion.draw())
+
+        this.drawLives()
+        this.drawScore()
+
 
     },
 
@@ -244,6 +259,25 @@ const Game = {
 
     },
 
+    deleteBossKids(){
+
+        this.bossKids.forEach((kid, idx) => {
+            if (kid._posX <= kid._radius -10 ||
+                kid._posX > this.canvas.width + 300 ||
+                kid._posY > this.canvas.height + kid._radius ||
+                kid._posY < 0 - kid._radius) {
+              this.bossKids.splice(idx, 1);
+            }
+          })
+
+    },
+
+    
+    deleteExplosions(){
+        this.explosions.forEach((explosion, idx) => explosion._image.frameIndex > 12 ?  this.explosions.splice(idx,1) : null
+        )
+    },
+
     deleteBullets(){
 
         this.heroShip._bullets.forEach((bullet, idx) =>{
@@ -252,16 +286,9 @@ const Game = {
                 bullet._bulletPosY < 0 ||
                 bullet._bulletPosY > this.canvas.height){
                     this.heroShip._bullets.splice(idx , 1)
-                }
-        } )
-    },
-
-
-    deleteExplosions(){
-        this.explosions.forEach((explosion, idx) => explosion._image.frameIndex > 12 ?  this.explosions.splice(idx,1) : null
-        )
-    },
-
+                }    
+        } )        
+    },    
 
     isCollision(){
        if(this.isPlay){
@@ -301,8 +328,6 @@ const Game = {
                 this.pause = 0
             }
         } 
-
-
     },
 
 
@@ -317,11 +342,11 @@ const Game = {
                 bullet._bulletPosY <= square._posY + square._height &&
                 bullet._bulletPosY >= square._posY
                 ){
+                    
                     //create explosion
-
                     this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+                    
                     //delete bullet
-
                     this.heroShip._bullets.splice(bulletId , 1)
 
 
@@ -360,8 +385,6 @@ const Game = {
                     this.heroShip._bullets.splice(bulletId , 1)
                     this.score += 2
                    
-
-
                     this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
                     this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
                     this.bossKids.push(new BossKids(this.ctx, this.canvas.width, this.canvas.height, this.boss))
@@ -373,7 +396,6 @@ const Game = {
 
             })
 
-            
 
             //colission with boss kids circles
             this.bossKids.forEach((circle, circleId) => {
@@ -396,16 +418,7 @@ const Game = {
                 })
             })
 
-
-
-
-
         }
-    
-    
-    
-    
-    
     },
 
     drawLives(){
@@ -435,5 +448,55 @@ const Game = {
       },
     
 
+
+      captainMessage(wave){
+          
+          this.commanderImage = new Image()
+          this.commanderImage.src = "../images/captain/captain.png"
+        //   console.log(wave)
+
+        switch(wave){
+
+            case 1:       
+                console.log("enter case")
+                this.ctx.lineWidth = 5
+                this.ctx.strokeStyle = "lightgrey"
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+                this.ctx.strokeRect(this.canvas.width-500, this.canvas.height-238, 310, 214)
+                
+                this.ctx.drawImage(this.commanderImage, this.canvas.width-200, this.canvas.height-240, 180, 220)
+
+            break;
+
+            case 2: 
+                this.ctx.lineWidth = 5
+                this.ctx.strokeStyle = "lightgrey"
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+                this.ctx.strokeRect(this.canvas.width-500, this.canvas.height-238, 310, 214)
+                
+                this.ctx.drawImage(this.commanderImage, this.canvas.width-200, this.canvas.height-240, 180, 220)
+
+            break;
+
+            case 3: 
+                this.ctx.lineWidth = 5
+                this.ctx.strokeStyle = "lightgrey"
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+                this.ctx.strokeRect(this.canvas.width-500, this.canvas.height-238, 310, 214)
+                
+                this.ctx.drawImage(this.commanderImage, this.canvas.width-200, this.canvas.height-240, 180, 220)
+            break;
+
+        }
+
+
+
+
+
+   
+
+
+      },
+    
 
 }

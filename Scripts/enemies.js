@@ -2,8 +2,8 @@ class BlueBigSquare{
     constructor(ctx, screenwidth, screenheight){
     this._name = "BlueBigSquare"
     this._ctx = ctx
-    this._width = 300
-    this._height = 300
+    this._width = 200
+    this._height = 200
     this._posX = 0
     this._posY = 0
     this._velX = 0
@@ -178,8 +178,8 @@ class BossKids{
 
 
         //generate speeds 
-         this._velX = Math.random()*5
-         this._velY = Math.random()*5
+         this._velX = - Math.random()*5
+         this._velY =  Math.random() > 0.5 ? -Math.random()*5 : Math.random()*5
  
  
          //adjust speeds depending on the location of the enemy

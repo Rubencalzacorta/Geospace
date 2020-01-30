@@ -3,18 +3,16 @@ class Boss1{
     this._ctx = ctx
     this._screenWidth = screenwidth
     this._screenHeight = screenheight
-    this._radius = 300
-    // this._posX = this._screenWidth + this._radius
-    // this._posY = this._screenHeight / 2
+    this._radius = screenheight/3
+    this._posX = this._screenWidth + this._radius
+    this._posY = this._screenHeight / 2
 
-    this._posX = 300
-    this._posY = 300
-
-    this._velX = 5
-    this._velY = 5
+    this._velX = -.5
+    this._velY = 0
     this._color = "orange"
     this._life = 50
     this._isHit = true
+    
 
     }
 
@@ -47,11 +45,24 @@ class Boss1{
 
     }
 
+    move(){
+
+        this._posX += this._velX
+        this._posY += this._velY
+
+
+    }
+
     hit(){
         this._life --
         this._isHit = true
     }
 
+    lifeBar(){
+        
+
+
+    }
 
 
 }

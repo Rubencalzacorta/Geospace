@@ -464,7 +464,7 @@ const Game = {
     captainMessage(wave){
           
           this.commanderImage = new Image()
-          this.commanderImage.src = "../images/captain/captain.png"
+          this.commanderImage.src = "images/captain/captain.png"
         //   console.log(wave)
 
         switch(wave){
@@ -473,7 +473,7 @@ const Game = {
 
                 //text of message
                 this.message1Image = new Image()
-                this.message1Image.src = "../images/captain/Mensaje1.png"
+                this.message1Image.src = "images/captain/Mensaje1.png"
                 this.ctx.drawImage(this.message1Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
                     
                 //box of text
@@ -491,7 +491,7 @@ const Game = {
 
                 //text of message
                 this.message2Image = new Image()
-                this.message2Image.src = "../images/captain/secondMessage.png"
+                this.message2Image.src = "images/captain/secondMessage.png"
                 this.ctx.drawImage(this.message2Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
 
                  //box of text
@@ -509,7 +509,7 @@ const Game = {
 
                 //text of message
                 this.message2Image = new Image()
-                this.message2Image.src = "../images/captain/thirdMessage.png"
+                this.message2Image.src = "images/captain/thirdMessage.png"
                 this.ctx.drawImage(this.message2Image, this.canvas.width-500, this.canvas.height-238, 310, 214)
 
                 this.ctx.lineWidth = 5

@@ -55,8 +55,8 @@ const Game = {
     },
 
     sounds:{
-        background: new Audio("../sounds/ambience.mp3"),
-        explosion: new Audio("./sounds/explosion.mp3")
+        background: new Audio("sounds/ambience.mp3"),
+        explosion: new Audio("sounds/explosion.mp3")
 
     },
 
@@ -68,7 +68,7 @@ const Game = {
         this.height = window.innerHeight
         this.canvas.width = this.width
         this.canvas.height = this.height
-        this.images.lifesImage.src = "../images/lives/life.png"
+        this.images.lifesImage.src = "images/lives/life.png"
         
         
 

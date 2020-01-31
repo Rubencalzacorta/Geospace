@@ -6,7 +6,7 @@ class Background {
         this._height = height
         this._width = width
         this._image = new Image()
-        this._image.src = "../images/BackGorund/bg_milkyway.jpg"
+        this._image.src = "images/BackGorund/bg_milkyway.jpg"
 
 
         //stars details

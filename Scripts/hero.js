@@ -11,7 +11,7 @@ class Hero {
         this._velY= 0,
         this._acceleration= 0.1
         this._image = new Image()
-        this._image.src = "/images/heroship/ovni.png"
+        this._image.src = "images/heroship/ovni.png"
         this._keys = keys
         this._counter = counter
         this._bulletReady = true

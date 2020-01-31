@@ -7,7 +7,7 @@ class Explosion{
         this._posY = posY - this._height/2
         this._counter = counter
         this._image = new Image()
-        this._image.src = "../images/explosions/mainexplosion.png"
+        this._image.src = "images/explosions/mainexplosion.png"
 
         this._image.frames = 12
         this._image.framesIndex = 0

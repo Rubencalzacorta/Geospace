@@ -27,7 +27,7 @@ class Bullet {
         this._counter = counter
 
         this._image = new Image()
-        this._image.src = "../images/bullet/bulletSprite.png"
+        this._image.src = "images/bullet/bulletSprite.png"
 
         this._image.frames = 14
         this._image.framesIndex = 0

@@ -56,7 +56,7 @@ const Game = {
 
     sounds:{
         background: new Audio("../sounds/ambience.mp3"),
-        explosion: new Sound("..//sounds/explosion.mp3")
+        explosion: new Audio("..//sounds/explosion.mp3")
 
     },
 
@@ -88,13 +88,9 @@ const Game = {
 
         this.interval = setInterval(() => {
             
-            // this.sounds.background.play()
+            this.sounds.background.play()
 
             this.clearScreen()
-            
-            
-            console.log(this.boss)
-
 
             //score for time alive
             this.counter % 60 == 0 ? this.score += 10 : null
@@ -121,6 +117,7 @@ const Game = {
             this.drawAll() 
             this.moveAll()
             this.isMissionAccomplished()
+            this.isGameOver()
        
             //add to counter and wave counter
             if(this.counter > this.waveDuration){
@@ -288,8 +285,7 @@ const Game = {
 
     
     deleteExplosions(){
-        this.explosions.forEach((explosion, idx) => explosion._image.frameIndex > 12 ?  this.explosions.splice(idx,1) : null
-        )
+        this.explosions.forEach((explosion, idx) => explosion._image.frameIndex > 12 ?  this.explosions.splice(idx,1) : null)
     },
 
     deleteBullets(){
@@ -358,7 +354,7 @@ const Game = {
                 ){
                     
                     //create explosion
-                    this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+                    this.explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter)
                     
                     //delete bullet
                     this.heroShip._bullets.splice(bulletId , 1)
@@ -422,8 +418,7 @@ const Game = {
 
                         this.score += 5
 
-                        
-                        this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+                        this.explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter)
                         
                         this.heroShip._bullets.splice(bulletId , 1)
                         this.bossKids.splice(circleId, 1)
@@ -438,7 +433,7 @@ const Game = {
     
     explosion(ctx, posX, posY, counter){
 
-        this.explosions.push(new Explosion(this.ctx, bullet._bulletPosX , bullet._bulletPosY, this.counter))
+        this.explosions.push(new Explosion(ctx, posX , posY, counter))
 
         this.sounds.explosion.play()
 
@@ -560,14 +555,12 @@ const Game = {
 
     isGameOver(){
         if(this.heroShip._lifes === 0){
-            console.log("game Over")
+            console.log(this.heroShip._lifes)
             this.timeToNextWave = 0
         }
     },
 
     updateInfoBar(){
-        console.log("this.timeToNextWave")
-
         document.querySelector("#score-number").innerHTML = this.score
         document.querySelector("#wave-number").innerHTML = this.currentWave
         document.querySelector("#time-left").innerHTML = this.timeToNextWave

@@ -5,6 +5,55 @@
     font-size: medium;
 }
 
+body{
+
+    background-image: url("/images/BackGorund/homescreenBackground.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+}
+
+
+/* ===================== HOME SCREEN ================== */
+
+.start-screen{
+    display: flex;
+    justify-content: space-around;
+    height: 900px;
+    align-items: center;
+
+    background-color: rgba(0,0,0,0.5);
+
+    z-index: -2;
+}
+
+.game-history{
+    width: 40%;
+    margin: 100px;
+    line-height: 2em;
+    padding: 30px;
+    border: 10px solid lightgray;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    z-index: 0;
+}
+
+#start{
+    color: white;
+    padding: 20px 40px;
+    border: 10px solid lightgray;
+    background-color: rgba(0,0,0,0.5);
+    text-transform: uppercase;
+    margin-right: 10%;
+    z-index: 1000;
+}
+
+#start:hover {
+    background-color: rgba(254,254,254, .5)
+}
+
+
 #myCanvas {
     background-color: black;
     position: relative;
@@ -32,8 +81,6 @@
     color:white;
     z-index: 11;
     text-align: left;
-   
-    
 }
 
 
@@ -56,5 +103,10 @@
     
 }
 
+.active {
+    display: flex;
+}
 
-
+.inactive{
+    display: none;
+}

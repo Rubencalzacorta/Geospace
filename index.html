@@ -9,25 +9,42 @@
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
+
+
+    <section class="start-screen active">  
+
+        <article class= "game-history">
+            <h1>Vectorlaxia y Pixerilux, dos universos paralelos, empezaron a fusionarse por una razón que todavía se desconoce. /br Por mucho tiempo hubo paz y un gran intercambio cultural. 
+
+                250 hiper-ciclos atras se descubrió que solo un universo podía sobrevivir, asi empezó la Gran Guerra. 
+                
+                Esta es tu guerra y todo está en tus manos. </h1>
+        </article>
+
+          <button id = "start">play</button>
     
+        </section>
+
+
     
-    <div id="score">
-        <h1>score: <span id="score-number">0</span> </h1>
-    </div>
+    <section class="game-screen inactive">
+        <div id="score">
+            <h1>score: <span id="score-number">0</span> </h1>
+        </div>
 
-    <div id="infobar"></div>
+        <div id="infobar"></div>
 
-    <div id="wave">
-        <h1>wave: <span id="wave-number">0</span> </h1>
-    </div>
+        <div id="wave">
+            <h1>wave: <span id="wave-number">0</span> </h1>
+        </div>
 
-    <div id="time-to-next-wave">
-        <h1>time left: <span id="time-left">0</span> </h1>
-    </div>
+        <div id="time-to-next-wave">
+            <h1>time left: <span id="time-left">0</span> </h1>
+        </div>
 
 
-    <canvas id="myCanvas"></canvas>
-
+        <canvas id="myCanvas"></canvas>
+    </section>  
 
     <script src="./Scripts/boss1.js"></script>
     <script src="./Scripts/scoreboard.js"></script>

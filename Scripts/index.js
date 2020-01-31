@@ -1,6 +1,7 @@
 window.onload = ()=> {
 
 document.getElementById("start").onclick = () => {
+    console.log("click")
     document.querySelector(".start-screen").classList.remove("active")
     document.querySelector(".start-screen").classList.add("inactive")
     

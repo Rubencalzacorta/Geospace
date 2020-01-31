@@ -10,7 +10,7 @@ class BlueBigSquare{
     this._velY = 0
     this._screenWidth = screenwidth
     this._screenHeight = screenheight
-    this._color = "blue"
+    this._color = "lightgreen"
 
     this.generatePosition()
     this.generateSpeeds()
@@ -103,7 +103,7 @@ class RedSmallSquare extends BlueBigSquare{
     this._posY = parentSquare._posY + parentSquare._height / 2
     this._velX = 0
     this._velY = 0
-    this._color = "red"
+    this._color = "white"
     this._velocitycoeficient = 3
 
     this.generateSpeeds()

@@ -56,7 +56,7 @@ const Game = {
 
     sounds:{
         background: new Audio("../sounds/ambience.mp3"),
-        explosion: new Audio("..//sounds/explosion.mp3")
+        explosion: new Audio("./sounds/explosion.mp3")
 
     },
 
@@ -88,7 +88,7 @@ const Game = {
 
         this.interval = setInterval(() => {
             
-            // this.sounds.background.play()
+            this.sounds.background.play()
 
             this.clearScreen()
 
@@ -597,7 +597,7 @@ const Game = {
 
     isGameOver(){
 
-        if(this.heroShip._lifes === 2){
+        if(this.heroShip._lifes === 0){
             console.log("gameOver")
 
 

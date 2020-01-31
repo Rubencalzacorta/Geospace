@@ -6,7 +6,6 @@ document.getElementById("start").onclick = () => {
     
     document.querySelector(".game-screen").classList.remove("inactive")
     document.querySelector(".game-screen").classList.add("active")
-    
     Game.init()
 }
 }

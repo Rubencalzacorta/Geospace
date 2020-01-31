@@ -69,10 +69,10 @@ const Game = {
         this.canvas.width = this.width
         this.canvas.height = this.height
         this.images.lifesImage.src = "../images/lives/life.png"
-        // this.backgroundMusic = new sound("../sounds/ambience.mp3")
+        
         
 
-
+        this.reset()
         this.start()
         this.enventListeners()
     },
@@ -88,7 +88,7 @@ const Game = {
 
         this.interval = setInterval(() => {
             
-            this.sounds.background.play()
+            // this.sounds.background.play()
 
             this.clearScreen()
 
@@ -119,7 +119,7 @@ const Game = {
             this.isMissionAccomplished()
             this.isGameOver()
        
-            //add to counter and wave counter
+            //add to counter and wave counter and messagecounter
             if(this.counter > this.waveDuration){
 
                     this.messageCounter ++ 
@@ -470,8 +470,6 @@ const Game = {
         switch(wave){
 
             case 1:       
-            console.log("enter case")
-
 
                 //text of message
                 this.message1Image = new Image()
@@ -527,9 +525,10 @@ const Game = {
 
     isMissionAccomplished(){
         if(this.boss){
-            if(this.boss._life == 0){
+            if(this.boss._life === 0){
 
                 this.isPlay = false
+                this.timeToNextWave = 0
 
                 if(this.counter % 2 == 0){
 
@@ -538,10 +537,39 @@ const Game = {
 
                     let bossExplosionY = Math.random()*this.boss._radius*2 + this.boss._posY - this.boss._radius
 
-                    this.explosions.push(new Explosion(this.ctx, bossExplosionX ,  bossExplosionY, this.counter))
-
+                    this.explosion(this.ctx, bossExplosionX ,  bossExplosionY, this.counter)
 
                 }
+
+
+                this.ctx.fillStyle = "white"
+
+                this.ctx.font = "50px 'Press Start 2P'" 
+    
+                setTimeout(() => {
+                    
+                    this.ctx.fillText(`VICTORIA!!!`, this.canvas.width/3*1, this.canvas.height/3*1)
+
+                    this.ctx.fillText(`LARGA VIDA A LOS PIXELS`, this.canvas.width/3*0.5, this.canvas.height/3*1.5)
+                                        
+                    this.ctx.fillText(`FINAL SCORE: ${this.score}`, this.canvas.width/3*0.8, this.canvas.height/3*2)
+                    
+                }, 1000);
+    
+                
+                
+                
+                setTimeout(() => {
+                    clearInterval(this.interval)
+                    
+                    document.querySelector(".start-screen").classList.remove("inactive")
+                    document.querySelector(".start-screen").classList.add("active")
+                    
+                    document.querySelector(".game-screen").classList.remove("active")
+                    document.querySelector(".game-screen").classList.add("inactive") 
+
+                }, 7000);
+
 
 
             }
@@ -551,12 +579,53 @@ const Game = {
         }
     },
 
-
+    reset(){
+        this.counter = 0
+        this.score = 0
+        this.enemySquares = []
+        this.bossKids =[]
+        this.explosions = []
+        this.isPlay = true
+        this.pause = 0
+        this.currentWave = 1
+        this.waveDuration = 900
+        this.timeToNextWave = 900
+        this.messageTime = 360
+        this.messageCounter = 0
+    },
+    
 
     isGameOver(){
-        if(this.heroShip._lifes === 0){
-            console.log(this.heroShip._lifes)
-            this.timeToNextWave = 0
+
+        if(this.heroShip._lifes === 2){
+            console.log("gameOver")
+
+
+            this.ctx.font = "50px 'Press Start 2P'"
+
+        
+            this.ctx.fillText("GAME OVER", this.canvas.width/3*1, this.canvas.height/3*1)
+
+            setTimeout(() => {
+                
+                this.ctx.fillText(`FINAL SCORE: ${this.score}`, this.canvas.width/3*0.8, this.canvas.height/3*2)
+                
+            }, 1000);
+
+            clearInterval(this.interval)
+
+
+
+            setTimeout(() => {
+                document.querySelector(".start-screen").classList.remove("inactive")
+                document.querySelector(".start-screen").classList.add("active")
+                
+                document.querySelector(".game-screen").classList.remove("active")
+                document.querySelector(".game-screen").classList.add("inactive") 
+            }, 4000);
+
+
+        
         }
     },
 
@@ -566,14 +635,7 @@ const Game = {
         document.querySelector("#time-left").innerHTML = this.timeToNextWave
 
 
-
-    }
-
-
-   
-
-
-    
-    
+        
+    },
 
 }
